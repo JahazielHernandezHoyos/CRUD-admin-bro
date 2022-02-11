@@ -5,20 +5,17 @@ const AdminJS = require('adminjs')
 const AdminJSExpress = require('@adminjs/express')
 const bcrypt = require('bcrypt')
 
-// We have to tell AdminJS that we will manage mongoose resources with it
+//importacion de modelos de mongodb
+const User = require('./models/User')
+const PostBlog = require('./models/PostBlog')
+
+// Tenemos que decirle a AdminJS que administraremos los recursos de mongoose con él.
 AdminJS.registerAdapter(require('@adminjs/mongoose'))
 
-// express server definition
+// definición de servidor express
 const app = express()
 
-// Resources definitions
-const User = mongoose.model('User', {
-  email: { type: String, required: true },
-  encryptedPassword: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'restricted'], required: true },
-})
-
-options = {
+const options = {
   branding: {
     logo: 'https://www.sena.edu.co/Style%20Library/alayout/images/logoSena.png',
     companyName: 'Tecnoacademia',
@@ -56,12 +53,17 @@ options = {
 
 // Pass all configuration settings to AdminJS
 const adminJs = new AdminJS({
-  resources: [{
+  resources:
+  [{
     resource: User,
     options:
-    {options}}],
-    rootPath: '/admin',
-    })
+    {options}},
+
+  {
+    resource: PostBlog
+  }],
+    rootPath: '/admin' })
+    
 
 // Build and use a router which will handle all AdminJS routes
 const router = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
@@ -87,7 +89,7 @@ app.set("port", process.env.PORT || 8080);
 const run = () => {
   mongoose.connect('mongodb+srv://tecnoacademiaADMIN:1126912183Hh@tecnoacademiablogs.mjfzz.mongodb.net/test', { useNewUrlParser: true })
   app.listen(app.get("port"), () => 
-  console.log(`Example app listening on port ${app.get("port")}!`))
+  console.log(`El puerto esta alojado en ${app.get("port")}!`))
 }
 
 run()
