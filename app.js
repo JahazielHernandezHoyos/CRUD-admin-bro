@@ -80,10 +80,14 @@ const router = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
 
 app.use(adminJs.options.rootPath, router)
 
+// settings
+app.set("port", process.env.PORT || 8080);
+
 // Running the server
 const run = () => {
   mongoose.connect('mongodb+srv://tecnoacademiaADMIN:1126912183Hh@tecnoacademiablogs.mjfzz.mongodb.net/test', { useNewUrlParser: true })
-  app.listen(8080, () => console.log(`Example app listening on port 8080!`))
+  app.listen(app.get("port"), () => 
+  console.log(`Example app listening on port ${app.get("port")}!`))
 }
 
 run()
