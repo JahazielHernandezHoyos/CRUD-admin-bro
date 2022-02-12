@@ -60,7 +60,12 @@ const adminJs = new AdminJS({
     {options}},
 
   {
-    resource: PostBlog
+    resource: PostBlog,
+    options: {
+      properties: {
+        contenido: { type: "richtext" },
+      },
+    },
   }],
     rootPath: '/admin' })
     
